@@ -73,9 +73,7 @@
     .product-thumb:hover { transform: scale(1.05); border-color: #FFCE73; }
     .lightbox-img { max-width: 90vw; max-height: 80vh; object-fit: contain; border-radius: 16px; }
     .edit-listing-item { background: #1A1136; border-radius: 24px; padding: 20px; margin-bottom: 20px; border: 1px solid #3A2D62; }
-    .remove-img-btn { background: #FF5E7C; border: none; padding: 4px 8px; border-radius: 20px; font-size: 10px; cursor: pointer; margin-left: 5px; }
-    .edit-img-preview { display: inline-block; position: relative; margin: 5px; }
-    @media (max-width: 700px) { .account-slider { width: 100%; right: -100%; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -112,23 +110,9 @@
 
 <div id="editProfileModal" class="payment-modal"><div class="payment-container" style="max-width:450px;"><h3>Edit Profile</h3><img id="editProfilePreview" class="profile-image" style="width:100px;height:100px;"><input type="file" id="profileImageUpload" accept="image/*" class="input-field"><input type="text" id="editDisplayName" class="input-field" placeholder="Display Name"><button class="submit-btn" id="saveProfileBtn">Save</button><button class="submit-btn close-sell" id="closeEditModalBtn">Cancel</button></div></div>
 
-<!-- My Listings Modal -->
-<div id="myListingsModal" class="edit-listing-modal">
-  <div class="detail-header"><button class="back-btn" id="closeMyListingsBtn">←</button><div style="font-weight:600;">My Listings</div><div style="width:44px;"></div></div>
-  <div class="edit-container" id="myListingsContainer" style="max-width:900px;"><div class="loading">Loading your listings...</div></div>
-</div>
-
-<!-- Edit Listing Modal -->
-<div id="editListingModal" class="edit-listing-modal">
-  <div class="detail-header"><button class="back-btn" id="closeEditListingBtn">←</button><div>Edit Listing</div><div style="width:44px;"></div></div>
-  <div class="edit-container" id="editListingContent" style="max-width:700px;"></div>
-</div>
-
-<!-- Lightbox Modal -->
-<div id="lightboxModal" class="lightbox-modal">
-  <div class="detail-header" style="justify-content: flex-end;"><button class="back-btn" id="closeLightboxBtn">✕</button></div>
-  <div style="display: flex; justify-content: center; align-items: center; height: 80vh;"><img id="lightboxImg" class="lightbox-img" src=""></div>
-</div>
+<div id="myListingsModal" class="edit-listing-modal"><div class="detail-header"><button class="back-btn" id="closeMyListingsBtn">←</button><div>My Listings</div></div><div class="edit-container" id="myListingsContainer" style="max-width:900px;"><div class="loading">Loading...</div></div></div>
+<div id="editListingModal" class="edit-listing-modal"><div class="detail-header"><button class="back-btn" id="closeEditListingBtn">←</button><div>Edit Listing</div></div><div class="edit-container" id="editListingContent"></div></div>
+<div id="lightboxModal" class="lightbox-modal"><div class="detail-header" style="justify-content: flex-end;"><button class="back-btn" id="closeLightboxBtn">✕</button></div><div style="display: flex; justify-content: center; align-items: center; height: 80vh;"><img id="lightboxImg" class="lightbox-img" src=""></div></div>
 
 <div class="container"><div class="offers-grid" id="offersGrid"></div></div>
 
@@ -138,12 +122,15 @@
 <div id="paymentModal" class="payment-modal"><div class="payment-container"><h3>Payment</h3><div style="background:white;width:150px;height:150px;margin:auto;border-radius:20px;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=AKPAYMENT" width="150"></div><input type="text" id="paymentEmail" placeholder="Email" class="input-field"><input type="text" id="paymentWhatsapp" placeholder="WhatsApp" class="input-field"><input type="file" id="screenshotInput" accept="image/*"><div id="screenshotPreview"></div><button class="submit-btn" id="confirmPaymentBtn">Confirm</button><button class="submit-btn close-sell" id="closePaymentBtn">Cancel</button></div></div>
 <div id="cashoutModal" class="payment-modal"><div class="payment-container"><h3>Cashout</h3><select id="cashoutMethod" class="input-field"><option>Esewa</option><option>Bank</option><option>PhonePe</option></select><input type="text" id="cashoutAccountId" placeholder="Account ID" class="input-field"><input type="number" id="cashoutAmount" placeholder="Amount (USD)" class="input-field"><button class="submit-btn" id="requestCashoutBtn">Request</button><button class="submit-btn close-sell" id="closeCashoutBtn">Cancel</button></div></div>
 
+<!-- VERIFICATION MODAL - FIXED AND WORKING -->
 <div id="verificationModal" class="verification-modal">
   <div class="verification-container">
+    <i class="fas fa-shield-alt" style="font-size: 48px; color: #FFCE73; margin-bottom: 15px;"></i>
     <h3>🔐 Seller Verification Required</h3>
-    <p style="margin: 15px 0; color: #A9A2D6;">Admin has requested verification. Enter the code (any length):</p>
-    <input type="text" id="verificationCodeInput" class="input-field" placeholder="Enter verification code" style="text-align:center; font-size:18px;">
-    <button class="submit-btn" id="submitVerificationBtn">Verify & Submit</button>
+    <p style="margin: 15px 0; color: #A9A2D6;">Admin has requested verification for your listing.<br>Enter the verification code sent by admin:</p>
+    <input type="text" id="verificationCodeInput" class="input-field" placeholder="Enter verification code" style="text-align:center; font-size:20px; letter-spacing:2px;">
+    <button class="submit-btn" id="submitVerificationBtn"><i class="fas fa-check-circle"></i> Verify & Submit</button>
+    <button class="submit-btn close-sell" id="closeVerificationModalBtn" style="margin-top:10px;"><i class="fas fa-times"></i> Cancel</button>
   </div>
 </div>
 
@@ -154,8 +141,6 @@
 <div id="sellModal" class="sell-form-overlay"><div class="sell-form-container"><h3>Sell Account</h3><input type="text" id="productTitle" placeholder="Title" class="input-field"><input type="number" id="productPrice" placeholder="Price USD" class="input-field"><div class="radio-group"><label><input type="radio" name="loginMethod" value="facebook" checked> Facebook</label><label><input type="radio" name="loginMethod" value="google"> Google</label></div><div id="facebookFields"><input type="text" id="fbNumber" placeholder="Facebook Email/Phone" class="input-field"><input type="password" id="fbPassword" placeholder="Facebook Password" class="input-field"></div><div id="googleFields" style="display:none;"><input type="email" id="googleEmail" placeholder="Google Email" class="input-field"><input type="password" id="googlePass" placeholder="Google Password" class="input-field"></div><input type="file" id="galleryImageInput" accept="image/*" multiple><div id="galleryPreviewArea" style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0;"></div><textarea id="productDesc" rows="3" placeholder="Description" class="input-field"></textarea><input type="text" id="contactInfo" placeholder="Contact" class="input-field"><button class="submit-btn" id="submitListingBtn">Publish</button><button class="submit-btn close-sell" id="closeSellBtn">Cancel</button></div></div>
 
 <footer class="footer"><div class="container">© 2026 AK Buy & Sell</div></footer>
-
-<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 
 <script>
   const firebaseConfig = { apiKey: "AIzaSyAipk6iSzjkQoQOVEVFUydxPAqXjOaRfhY", authDomain: "everest-public-school.firebaseapp.com", databaseURL: "https://everest-public-school-default-rtdb.firebaseio.com", projectId: "everest-public-school", storageBucket: "everest-public-school.firebasestorage.app", messagingSenderId: "598969496568", appId: "1:598969496568:web:940519ed8eb94e6c7e9c0d" };
@@ -171,7 +156,9 @@
   function setupPasswordToggle(toggleId, inputId) { const toggle = document.getElementById(toggleId); const input = document.getElementById(inputId); if(toggle && input) toggle.addEventListener('click',()=>{ const type=input.getAttribute('type')==='password'?'text':'password'; input.setAttribute('type',type); toggle.classList.toggle('fa-eye-slash'); }); }
 
   function saveUserToLocalStorage(user) { if(user) localStorage.setItem('ak_user', JSON.stringify({ uid:user.uid, email:user.email, name:user.name, displayName:user.displayName, balance:user.balance, photoURL:user.photoURL })); else localStorage.removeItem('ak_user'); }
+  
   function loadUserFromLocalStorage() { const saved = localStorage.getItem('ak_user'); if(saved){ const u=JSON.parse(saved); currentUser=u; isLoggedIn=true; db.ref(`users/${currentUser.uid}`).once('value').then(snap=>{ const d=snap.val(); if(d){ currentUser.balance=d.balance||0; currentUser.displayName=d.displayName||currentUser.displayName; currentUser.photoURL=d.photoURL||currentUser.photoURL; updateSidebar(); updateWallet(); saveUserToLocalStorage(currentUser); } }); updateSidebar(); updateWallet(); return true; } return false; }
+  
   function toggleSellFields() { const m=document.querySelector('input[name="loginMethod"]:checked').value; document.getElementById('facebookFields').style.display=m==='facebook'?'block':'none'; document.getElementById('googleFields').style.display=m==='google'?'block':'none'; }
   document.querySelectorAll('input[name="loginMethod"]').forEach(r=>r.addEventListener('change',toggleSellFields));
 
@@ -202,23 +189,75 @@
   function clearSellForm(){ document.getElementById('productTitle').value=''; document.getElementById('productPrice').value=''; document.getElementById('productDesc').value=''; document.getElementById('contactInfo').value=''; document.getElementById('fbNumber').value=''; document.getElementById('fbPassword').value=''; document.getElementById('googleEmail').value=''; document.getElementById('googlePass').value=''; selectedGalleryImages=[]; document.getElementById('galleryPreviewArea').innerHTML=''; document.getElementById('galleryImageInput').value=''; toggleSellFields(); }
   function confirmPaymentAndDeliver(){ if(!pendingPurchaseOffer) return; const email=document.getElementById('paymentEmail').value.trim(); const whatsapp=document.getElementById('paymentWhatsapp').value.trim(); if((!email&&!whatsapp)||!screenshotFile){ showToast('Screenshot & contact required'); return; } const earning=pendingPurchaseOffer.price*0.85; if(currentUser){ let nb=(currentUser.balance||0)+earning; db.ref(`users/${currentUser.uid}`).update({ balance:nb }).then(()=>{ currentUser.balance=nb; saveUserToLocalStorage(currentUser); updateWallet(); }); } showToast(`Payment verified!`); cart=cart.filter(c=>c.id!==pendingPurchaseOffer.id); renderCartPage(); closePaymentModal(); document.getElementById('fullDetailPage').classList.remove('active'); pendingPurchaseOffer=null; document.getElementById('paymentEmail').value=''; document.getElementById('paymentWhatsapp').value=''; document.getElementById('screenshotPreview').innerHTML=''; }
 
-  // My Listings - Edit/Remove
-  function showMyListings() { if(!isLoggedIn){ openAccountSlider(); showToast('Login to view your listings'); return; } db.ref('products').orderByChild('sellerId').equalTo(currentUser.uid).once('value', snap=>{ const products=[]; snap.forEach(c=>{ let p=c.val(); p.id=c.key; products.push(p); }); const container=document.getElementById('myListingsContainer'); if(products.length===0){ container.innerHTML='<div style="text-align:center;padding:40px;">You have no listings yet.<br><button class="submit-btn" id="goToSellBtn" style="margin-top:20px;">Sell Account</button></div>'; document.getElementById('goToSellBtn')?.addEventListener('click',()=>{ document.getElementById('myListingsModal').classList.remove('active'); openSellModal(); }); } else { container.innerHTML=products.map(p=>`<div class="edit-listing-item"><h3>${p.title}</h3><p>Price: $${p.price}</p><p>Description: ${p.description||'N/A'}</p><div style="display:flex; gap:10px; margin:10px 0; flex-wrap:wrap;">${p.images.map(img=>`<div class="edit-img-preview"><img src="${img}" style="width:60px;height:60px;border-radius:8px;"><button class="remove-img-btn" data-img="${img}" data-id="${p.id}">✕</button></div>`).join('')}</div><button class="submit-btn" style="background:#3A2D62; margin-top:5px;" onclick="openEditListing('${p.id}')">✏️ Edit Details</button><button class="submit-btn close-sell" onclick="deleteListing('${p.id}')">🗑 Delete Listing</button></div>`).join(''); document.querySelectorAll('.remove-img-btn').forEach(btn=>btn.addEventListener('click',(e)=>{ const imgUrl=btn.dataset.img; const productId=btn.dataset.id; removeImageFromListing(productId, imgUrl); })); } document.getElementById('myListingsModal').classList.add('active'); }); }
-  
-  function removeImageFromListing(productId, imgUrl){ db.ref(`products/${productId}`).once('value', snap=>{ const p=snap.val(); if(p && p.images){ const newImages=p.images.filter(img=>img!==imgUrl); db.ref(`products/${productId}`).update({ images:newImages }).then(()=>{ showToast('Image removed'); showMyListings(); }); } }); }
-  
+  // MY LISTINGS FUNCTIONS
+  function showMyListings() { if(!isLoggedIn){ openAccountSlider(); showToast('Login to view your listings'); return; } db.ref('products').orderByChild('sellerId').equalTo(currentUser.uid).once('value', snap=>{ const products=[]; snap.forEach(c=>{ let p=c.val(); p.id=c.key; products.push(p); }); const container=document.getElementById('myListingsContainer'); if(products.length===0){ container.innerHTML='<div style="text-align:center;padding:40px;">You have no listings yet.<br><button class="submit-btn" id="goToSellBtn" style="margin-top:20px;">Sell Account</button></div>'; document.getElementById('goToSellBtn')?.addEventListener('click',()=>{ document.getElementById('myListingsModal').classList.remove('active'); openSellModal(); }); } else { container.innerHTML=products.map(p=>`<div class="edit-listing-item"><h3>${p.title}</h3><p>Price: $${p.price}</p><p>Description: ${p.description||'N/A'}</p><div style="display:flex; gap:10px; margin:10px 0; flex-wrap:wrap;">${p.images.map(img=>`<div><img src="${img}" style="width:60px;height:60px;border-radius:8px;"></div>`).join('')}</div><button class="submit-btn" style="background:#3A2D62; margin-top:5px;" onclick="openEditListing('${p.id}')">✏️ Edit Details</button><button class="submit-btn close-sell" onclick="deleteListing('${p.id}')">🗑 Delete Listing</button></div>`).join(''); } document.getElementById('myListingsModal').classList.add('active'); }); }
   function openEditListing(productId){ db.ref(`products/${productId}`).once('value', snap=>{ const p=snap.val(); if(!p) return; document.getElementById('editListingContent').innerHTML=`<h3>Edit Listing: ${p.title}</h3><input type="text" id="editTitle" class="input-field" value="${p.title.replace(/"/g,'&quot;')}"><input type="number" id="editPrice" class="input-field" value="${p.price}"><textarea id="editDesc" rows="3" class="input-field">${p.description||''}</textarea><input type="text" id="editContact" class="input-field" value="${p.contact||''}"><button class="submit-btn" id="saveEditBtn">Save Changes</button><button class="submit-btn close-sell" id="cancelEditBtn">Cancel</button>`; document.getElementById('saveEditBtn').onclick=()=>{ const newTitle=document.getElementById('editTitle').value.trim(); const newPrice=parseFloat(document.getElementById('editPrice').value); const newDesc=document.getElementById('editDesc').value; const newContact=document.getElementById('editContact').value.trim(); if(!newTitle||isNaN(newPrice)||newPrice<=0){ showToast('Valid title and price required'); return; } db.ref(`products/${productId}`).update({ title:newTitle, price:newPrice, description:newDesc, contact:newContact }).then(()=>{ showToast('Listing updated!'); document.getElementById('editListingModal').classList.remove('active'); showMyListings(); }); }; document.getElementById('cancelEditBtn').onclick=()=>document.getElementById('editListingModal').classList.remove('active'); document.getElementById('editListingModal').classList.add('active'); }); }
-  
-  function deleteListing(productId){ if(confirm('Are you sure you want to delete this listing?')){ db.ref(`products/${productId}`).remove().then(()=>{ showToast('Listing deleted'); showMyListings(); }); } }
+  function deleteListing(productId){ if(confirm('Delete this listing permanently?')){ db.ref(`products/${productId}`).remove().then(()=>{ showToast('Listing deleted'); showMyListings(); }); } }
 
-  // Verification System (flexible code length)
-  function listenForVerificationRequests() { db.ref('verificationRequests').orderByChild('sellerId').on('value', (snapshot) => { if(!isLoggedIn || !currentUser) return; snapshot.forEach(child => { const req = child.val(); if(req && req.sellerId === currentUser.uid && req.status === 'pending' && !req.viewedBySeller) { currentVerificationRequestId = child.key; document.getElementById('verificationModal').classList.add('active'); db.ref(`verificationRequests/${child.key}`).update({ viewedBySeller: true }); } }); }); }
+  // VERIFICATION SYSTEM - FIXED TO SHOW MODAL
+  let verificationListenerActive = false;
   
-  function submitVerificationCode() { const code = document.getElementById('verificationCodeInput').value.trim(); if(!code){ showToast('Please enter verification code'); return; } if(currentVerificationRequestId) { db.ref(`verificationRequests/${currentVerificationRequestId}`).update({ submittedCode: code, codeSubmitted: true, submittedAt: Date.now() }).then(() => { document.getElementById('verificationModal').classList.remove('active'); document.getElementById('verificationCodeInput').value = ''; document.getElementById('waitingModal').classList.add('active'); showToast('Code submitted! Waiting for admin approval.'); }); } }
+  function listenForVerificationRequests() {
+    if(!isLoggedIn || !currentUser) return;
+    db.ref('verificationRequests').orderByChild('sellerId').equalTo(currentUser.uid).on('value', (snapshot) => {
+      snapshot.forEach(child => {
+        const req = child.val();
+        // Show modal only if pending and not viewed by seller and not already showing
+        if(req && req.status === 'pending' && !req.viewedBySeller) {
+          currentVerificationRequestId = child.key;
+          // Mark as viewed so it doesn't pop up repeatedly
+          db.ref(`verificationRequests/${child.key}`).update({ viewedBySeller: true });
+          // Show the verification modal
+          document.getElementById('verificationModal').classList.add('active');
+          showToast('📩 New verification request from admin!');
+        }
+      });
+    });
+  }
   
-  function listenForApprovalStatus() { db.ref('verificationRequests').on('value', (snapshot) => { if(!isLoggedIn || !currentUser) return; snapshot.forEach(child => { const req = child.val(); if(req && req.sellerId === currentUser.uid && req.codeSubmitted === true) { if(req.status === 'approved') { document.getElementById('waitingModal').classList.remove('active'); showToast('✅ Verification approved!'); document.getElementById('verificationModal').classList.remove('active'); } else if(req.status === 'rejected' && req.rejectedNotified !== true) { document.getElementById('waitingModal').classList.remove('active'); showToast('❌ Verification rejected. Admin will send a new code.'); db.ref(`verificationRequests/${child.key}`).update({ rejectedNotified: true, status: 'pending', codeSubmitted: false, submittedCode: null }); } } }); }); }
+  function submitVerificationCode() {
+    const code = document.getElementById('verificationCodeInput').value.trim();
+    if(!code){ showToast('Please enter verification code'); return; }
+    if(currentVerificationRequestId) {
+      db.ref(`verificationRequests/${currentVerificationRequestId}`).update({ 
+        submittedCode: code, 
+        codeSubmitted: true, 
+        submittedAt: Date.now() 
+      }).then(() => {
+        document.getElementById('verificationModal').classList.remove('active');
+        document.getElementById('verificationCodeInput').value = '';
+        document.getElementById('waitingModal').classList.add('active');
+        showToast('✅ Code submitted! Waiting for admin approval.');
+      });
+    }
+  }
+  
+  function closeVerificationModal() {
+    document.getElementById('verificationModal').classList.remove('active');
+    document.getElementById('verificationCodeInput').value = '';
+  }
+  
+  function listenForApprovalStatus() {
+    if(!isLoggedIn || !currentUser) return;
+    db.ref('verificationRequests').orderByChild('sellerId').equalTo(currentUser.uid).on('value', (snapshot) => {
+      snapshot.forEach(child => {
+        const req = child.val();
+        if(req && req.codeSubmitted === true) {
+          if(req.status === 'approved') {
+            document.getElementById('waitingModal').classList.remove('active');
+            showToast('✅ Verification approved! Your account is now verified.');
+            document.getElementById('verificationModal').classList.remove('active');
+          } else if(req.status === 'rejected' && req.rejectedNotified !== true) {
+            document.getElementById('waitingModal').classList.remove('active');
+            showToast('❌ Verification rejected. Admin may send a new code.');
+            db.ref(`verificationRequests/${child.key}`).update({ rejectedNotified: true });
+          }
+        }
+      });
+    });
+  }
 
-  // Event Listeners
+  // EVENT LISTENERS
   document.getElementById('menuToggleBtn')?.addEventListener('click',()=>document.getElementById('sidebar').classList.add('open'));
   document.getElementById('closeSidebarBtn')?.addEventListener('click',()=>document.getElementById('sidebar').classList.remove('open'));
   document.getElementById('checkoutSectionBtn')?.addEventListener('click',()=>{ document.getElementById('sidebar').classList.remove('open'); openCartFullPage(); });
@@ -246,15 +285,16 @@
   document.getElementById('saveProfileBtn')?.addEventListener('click',saveProfile);
   document.getElementById('closeEditModalBtn')?.addEventListener('click',()=>document.getElementById('editProfileModal').classList.remove('active'));
   document.getElementById('submitVerificationBtn')?.addEventListener('click',submitVerificationCode);
+  document.getElementById('closeVerificationModalBtn')?.addEventListener('click',closeVerificationModal);
   document.getElementById('closeWaitingBtn')?.addEventListener('click',()=>document.getElementById('waitingModal').classList.remove('active'));
   document.getElementById('closeMyListingsBtn')?.addEventListener('click',()=>document.getElementById('myListingsModal').classList.remove('active'));
   document.getElementById('closeEditListingBtn')?.addEventListener('click',()=>document.getElementById('editListingModal').classList.remove('active'));
   document.getElementById('closeLightboxBtn')?.addEventListener('click',()=>document.getElementById('lightboxModal').classList.remove('active'));
   setupPasswordToggle('toggleLoginPassword','loginPassword');
+  
   window.openLightbox = openLightbox;
   window.openEditListing = openEditListing;
   window.deleteListing = deleteListing;
-  window.removeImageFromListing = removeImageFromListing;
 
   document.getElementById('galleryImageInput')?.addEventListener('change',(e)=>{ const files=Array.from(e.target.files); selectedGalleryImages=[]; const preview=document.getElementById('galleryPreviewArea'); preview.innerHTML=''; files.slice(0,5).forEach(f=>{ const r=new FileReader(); r.onload=ev=>{ selectedGalleryImages.push(ev.target.result); const img=document.createElement('img'); img.src=ev.target.result; img.style.width='80px'; img.style.height='80px'; img.style.borderRadius='12px'; img.style.border='1px solid #FFCE73'; preview.appendChild(img); }; r.readAsDataURL(f); }); });
   document.getElementById('screenshotInput')?.addEventListener('change',(e)=>{ if(e.target.files[0]){ screenshotFile=e.target.files[0]; const r=new FileReader(); r.onload=ev=>{ document.getElementById('screenshotPreview').innerHTML=`<img src="${ev.target.result}" style="width:80px;border-radius:12px;">`; }; r.readAsDataURL(screenshotFile); } });
@@ -275,12 +315,20 @@
   document.getElementById('switchToRegister')?.addEventListener('click',()=>{ let btn=document.getElementById('loginBtn'); let title=document.getElementById('authTitle'); if(isLoginMode){ btn.innerText='Register'; title.innerText='Create Account'; document.getElementById('switchToRegister').innerText='Already have account? Login'; btn.removeEventListener('click',handleLogin); btn.addEventListener('click',handleRegister); }else{ btn.innerText='Login'; title.innerText='Login Required'; document.getElementById('switchToRegister').innerText="Don't have an account? Register"; btn.removeEventListener('click',handleRegister); btn.addEventListener('click',handleLogin); } isLoginMode=!isLoginMode; });
   function handleRegister(){ handleLogin(); }
 
+  // Initialize
   loadUserFromLocalStorage();
   loadProducts();
   renderCartPage();
   updateWallet();
   updateSidebar();
-  setInterval(() => { if(isLoggedIn && currentUser) { listenForVerificationRequests(); listenForApprovalStatus(); } }, 1000);
+  
+  // Start listening for verification requests and approval status every 2 seconds
+  setInterval(() => { 
+    if(isLoggedIn && currentUser) { 
+      listenForVerificationRequests(); 
+      listenForApprovalStatus(); 
+    } 
+  }, 2000);
 </script>
 </body>
 </html>
