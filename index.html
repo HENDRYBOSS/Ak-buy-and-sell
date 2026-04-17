@@ -8,6 +8,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background: #0A0518; color: #F1EFFF; overflow-x: hidden; }
@@ -45,6 +46,11 @@
     .close-account { position: absolute; top: 20px; left: 20px; background: none; border: none; color: #FFCE73; font-size: 24px; cursor: pointer; }
     .input-field { width: 100%; padding: 14px; background: #1E153C; border: 1px solid #3A2D62; border-radius: 30px; color: white; margin: 12px 0; outline: none; }
     .input-field:focus { border-color: #FFCE73; }
+    .password-wrapper { position: relative; width: 100%; }
+    .password-wrapper input { width: 100%; padding: 14px; padding-right: 50px; background: #1E153C; border: 1px solid #3A2D62; border-radius: 30px; color: white; outline: none; }
+    .password-wrapper input:focus { border-color: #FFCE73; }
+    .toggle-password { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #A9A2D6; font-size: 18px; transition: 0.2s; }
+    .toggle-password:hover { color: #FFCE73; }
     .auth-btn { background: #FFCE73; width: 100%; padding: 14px; border-radius: 40px; font-weight: bold; border: none; margin-top: 12px; cursor: pointer; color: #0A0518; font-size: 16px; transition: 0.2s; }
     .auth-btn:hover { transform: scale(0.98); }
     .switch-auth { text-align: center; margin-top: 20px; color: #FFCE73; cursor: pointer; }
@@ -124,13 +130,16 @@
   <div class="sidebar-item logout-item" id="logoutBtn">🚪 Logout</div>
 </div>
 
-<!-- Login/Register Slider -->
+<!-- Login/Register Slider with Password Toggle -->
 <div id="accountSlider" class="account-slider">
   <button class="close-account" id="closeAccountBtn">✕</button>
   <h2 id="authTitle">Login or Register</h2>
   <div id="authForm">
     <input type="text" id="loginEmail" class="input-field" placeholder="Email or Username">
-    <input type="password" id="loginPassword" class="input-field" placeholder="Password">
+    <div class="password-wrapper">
+      <input type="password" id="loginPassword" placeholder="Password">
+      <i class="fas fa-eye toggle-password" id="toggleLoginPassword"></i>
+    </div>
     <button class="auth-btn" id="loginBtn">Login</button>
     <div class="switch-auth" id="switchToRegister">Don't have an account? Register</div>
   </div>
@@ -202,6 +211,19 @@
   function formatNPR(usd) { return `रू${(usd * USD_TO_NPR).toFixed(2)}`; }
   function showToast(msg) { let t=document.createElement('div'); t.className='toast-notify'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
 
+  // Password toggle function
+  function setupPasswordToggle(toggleId, inputId) {
+    const toggleBtn = document.getElementById(toggleId);
+    const passwordInput = document.getElementById(inputId);
+    if (toggleBtn && passwordInput) {
+      toggleBtn.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+      });
+    }
+  }
+
   // User state with persistence
   let isLoggedIn = false;
   let currentUser = null;
@@ -213,7 +235,6 @@
   let pendingPurchaseOffer = null;
   let marketplaceOffers = [];
 
-  // Save user to localStorage
   function saveUserToLocalStorage(user) {
     if (user) {
       localStorage.setItem('ak_user', JSON.stringify({
@@ -229,14 +250,12 @@
     }
   }
 
-  // Load user from localStorage on page load
   function loadUserFromLocalStorage() {
     const savedUser = localStorage.getItem('ak_user');
     if (savedUser) {
       const userData = JSON.parse(savedUser);
       currentUser = userData;
       isLoggedIn = true;
-      // Fetch latest balance from Firebase
       db.ref(`users/${currentUser.uid}`).once('value').then(snap => {
         const userFromDB = snap.val();
         if (userFromDB) {
@@ -448,7 +467,6 @@
           pendingOfferForAction = null;
         }
       } else {
-        // Register new user
         db.ref(`users/${userId}`).set({
           email, password: pwd,
           name: email.split('@')[0],
@@ -669,6 +687,10 @@
   document.getElementById('searchInput')?.addEventListener('input', () => renderCards());
   document.getElementById('saveProfileBtn')?.addEventListener('click', saveProfile);
   document.getElementById('closeEditModalBtn')?.addEventListener('click', () => document.getElementById('editProfileModal').classList.remove('active'));
+  
+  // Setup password toggle
+  setupPasswordToggle('toggleLoginPassword', 'loginPassword');
+  
   document.getElementById('galleryImageInput')?.addEventListener('change', (e) => {
     const files = Array.from(e.target.files);
     selectedGalleryImages = [];
