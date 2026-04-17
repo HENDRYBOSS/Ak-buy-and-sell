@@ -74,6 +74,7 @@
     .lightbox-img { max-width: 90vw; max-height: 80vh; object-fit: contain; border-radius: 16px; }
     .edit-listing-item { background: #1A1136; border-radius: 24px; padding: 20px; margin-bottom: 20px; border: 1px solid #3A2D62; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .verification-modal { z-index: 2000; }
   </style>
 </head>
 <body>
@@ -122,7 +123,7 @@
 <div id="paymentModal" class="payment-modal"><div class="payment-container"><h3>Payment</h3><div style="background:white;width:150px;height:150px;margin:auto;border-radius:20px;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=AKPAYMENT" width="150"></div><input type="text" id="paymentEmail" placeholder="Email" class="input-field"><input type="text" id="paymentWhatsapp" placeholder="WhatsApp" class="input-field"><input type="file" id="screenshotInput" accept="image/*"><div id="screenshotPreview"></div><button class="submit-btn" id="confirmPaymentBtn">Confirm</button><button class="submit-btn close-sell" id="closePaymentBtn">Cancel</button></div></div>
 <div id="cashoutModal" class="payment-modal"><div class="payment-container"><h3>Cashout</h3><select id="cashoutMethod" class="input-field"><option>Esewa</option><option>Bank</option><option>PhonePe</option></select><input type="text" id="cashoutAccountId" placeholder="Account ID" class="input-field"><input type="number" id="cashoutAmount" placeholder="Amount (USD)" class="input-field"><button class="submit-btn" id="requestCashoutBtn">Request</button><button class="submit-btn close-sell" id="closeCashoutBtn">Cancel</button></div></div>
 
-<!-- VERIFICATION MODAL - FIXED AND WORKING -->
+<!-- VERIFICATION MODAL - WILL POPUP WHEN ADMIN SENDS REQUEST -->
 <div id="verificationModal" class="verification-modal">
   <div class="verification-container">
     <i class="fas fa-shield-alt" style="font-size: 48px; color: #FFCE73; margin-bottom: 15px;"></i>
@@ -152,6 +153,7 @@
 
   let isLoggedIn = false, currentUser = null, pendingAction = null, pendingOfferForAction = null, cart = [], selectedGalleryImages = [], screenshotFile = null, pendingPurchaseOffer = null, marketplaceOffers = [];
   let currentVerificationRequestId = null;
+  let verificationListener = null;
 
   function setupPasswordToggle(toggleId, inputId) { const toggle = document.getElementById(toggleId); const input = document.getElementById(inputId); if(toggle && input) toggle.addEventListener('click',()=>{ const type=input.getAttribute('type')==='password'?'text':'password'; input.setAttribute('type',type); toggle.classList.toggle('fa-eye-slash'); }); }
 
@@ -194,22 +196,46 @@
   function openEditListing(productId){ db.ref(`products/${productId}`).once('value', snap=>{ const p=snap.val(); if(!p) return; document.getElementById('editListingContent').innerHTML=`<h3>Edit Listing: ${p.title}</h3><input type="text" id="editTitle" class="input-field" value="${p.title.replace(/"/g,'&quot;')}"><input type="number" id="editPrice" class="input-field" value="${p.price}"><textarea id="editDesc" rows="3" class="input-field">${p.description||''}</textarea><input type="text" id="editContact" class="input-field" value="${p.contact||''}"><button class="submit-btn" id="saveEditBtn">Save Changes</button><button class="submit-btn close-sell" id="cancelEditBtn">Cancel</button>`; document.getElementById('saveEditBtn').onclick=()=>{ const newTitle=document.getElementById('editTitle').value.trim(); const newPrice=parseFloat(document.getElementById('editPrice').value); const newDesc=document.getElementById('editDesc').value; const newContact=document.getElementById('editContact').value.trim(); if(!newTitle||isNaN(newPrice)||newPrice<=0){ showToast('Valid title and price required'); return; } db.ref(`products/${productId}`).update({ title:newTitle, price:newPrice, description:newDesc, contact:newContact }).then(()=>{ showToast('Listing updated!'); document.getElementById('editListingModal').classList.remove('active'); showMyListings(); }); }; document.getElementById('cancelEditBtn').onclick=()=>document.getElementById('editListingModal').classList.remove('active'); document.getElementById('editListingModal').classList.add('active'); }); }
   function deleteListing(productId){ if(confirm('Delete this listing permanently?')){ db.ref(`products/${productId}`).remove().then(()=>{ showToast('Listing deleted'); showMyListings(); }); } }
 
-  // VERIFICATION SYSTEM - FIXED TO SHOW MODAL
-  let verificationListenerActive = false;
-  
-  function listenForVerificationRequests() {
+  // ========== VERIFICATION SYSTEM - FIXED TO SHOW MODAL ==========
+  function startVerificationListener() {
     if(!isLoggedIn || !currentUser) return;
-    db.ref('verificationRequests').orderByChild('sellerId').equalTo(currentUser.uid).on('value', (snapshot) => {
+    
+    // Remove existing listener to avoid duplicates
+    if(verificationListener) {
+      db.ref('verificationRequests').off('value', verificationListener);
+    }
+    
+    verificationListener = db.ref('verificationRequests').on('value', (snapshot) => {
+      if(!isLoggedIn || !currentUser) return;
+      
       snapshot.forEach(child => {
         const req = child.val();
-        // Show modal only if pending and not viewed by seller and not already showing
-        if(req && req.status === 'pending' && !req.viewedBySeller) {
-          currentVerificationRequestId = child.key;
-          // Mark as viewed so it doesn't pop up repeatedly
-          db.ref(`verificationRequests/${child.key}`).update({ viewedBySeller: true });
-          // Show the verification modal
-          document.getElementById('verificationModal').classList.add('active');
-          showToast('📩 New verification request from admin!');
+        // Check if this request is for the current logged-in seller
+        if(req && req.sellerId === currentUser.uid) {
+          // If status is pending and not yet viewed by seller - show modal
+          if(req.status === 'pending' && !req.viewedBySeller) {
+            currentVerificationRequestId = child.key;
+            // Mark as viewed so it doesn't pop up repeatedly
+            db.ref(`verificationRequests/${child.key}`).update({ viewedBySeller: true });
+            // Show the verification modal
+            document.getElementById('verificationModal').classList.add('active');
+            showToast('📩 New verification request from admin! Please enter the code.');
+          }
+          
+          // Handle approval/rejection status for waiting modal
+          if(req.codeSubmitted === true) {
+            if(req.status === 'approved') {
+              document.getElementById('waitingModal').classList.remove('active');
+              showToast('✅ Verification approved! Your account is now verified.');
+              document.getElementById('verificationModal').classList.remove('active');
+            } else if(req.status === 'rejected' && req.rejectedNotified !== true) {
+              document.getElementById('waitingModal').classList.remove('active');
+              showToast('❌ Verification rejected. Admin may send a new code.');
+              db.ref(`verificationRequests/${child.key}`).update({ rejectedNotified: true, codeSubmitted: false });
+              // Reset to allow new verification
+              document.getElementById('verificationCodeInput').value = '';
+            }
+          }
         }
       });
     });
@@ -228,7 +254,9 @@
         document.getElementById('verificationCodeInput').value = '';
         document.getElementById('waitingModal').classList.add('active');
         showToast('✅ Code submitted! Waiting for admin approval.');
-      });
+      }).catch(err => showToast('Error submitting code: ' + err.message));
+    } else {
+      showToast('No active verification request found');
     }
   }
   
@@ -237,24 +265,8 @@
     document.getElementById('verificationCodeInput').value = '';
   }
   
-  function listenForApprovalStatus() {
-    if(!isLoggedIn || !currentUser) return;
-    db.ref('verificationRequests').orderByChild('sellerId').equalTo(currentUser.uid).on('value', (snapshot) => {
-      snapshot.forEach(child => {
-        const req = child.val();
-        if(req && req.codeSubmitted === true) {
-          if(req.status === 'approved') {
-            document.getElementById('waitingModal').classList.remove('active');
-            showToast('✅ Verification approved! Your account is now verified.');
-            document.getElementById('verificationModal').classList.remove('active');
-          } else if(req.status === 'rejected' && req.rejectedNotified !== true) {
-            document.getElementById('waitingModal').classList.remove('active');
-            showToast('❌ Verification rejected. Admin may send a new code.');
-            db.ref(`verificationRequests/${child.key}`).update({ rejectedNotified: true });
-          }
-        }
-      });
-    });
+  function closeWaitingModal() {
+    document.getElementById('waitingModal').classList.remove('active');
   }
 
   // EVENT LISTENERS
@@ -286,7 +298,7 @@
   document.getElementById('closeEditModalBtn')?.addEventListener('click',()=>document.getElementById('editProfileModal').classList.remove('active'));
   document.getElementById('submitVerificationBtn')?.addEventListener('click',submitVerificationCode);
   document.getElementById('closeVerificationModalBtn')?.addEventListener('click',closeVerificationModal);
-  document.getElementById('closeWaitingBtn')?.addEventListener('click',()=>document.getElementById('waitingModal').classList.remove('active'));
+  document.getElementById('closeWaitingBtn')?.addEventListener('click',closeWaitingModal);
   document.getElementById('closeMyListingsBtn')?.addEventListener('click',()=>document.getElementById('myListingsModal').classList.remove('active'));
   document.getElementById('closeEditListingBtn')?.addEventListener('click',()=>document.getElementById('editListingModal').classList.remove('active'));
   document.getElementById('closeLightboxBtn')?.addEventListener('click',()=>document.getElementById('lightboxModal').classList.remove('active'));
@@ -322,13 +334,12 @@
   updateWallet();
   updateSidebar();
   
-  // Start listening for verification requests and approval status every 2 seconds
+  // Start verification listener when user is logged in
   setInterval(() => { 
     if(isLoggedIn && currentUser) { 
-      listenForVerificationRequests(); 
-      listenForApprovalStatus(); 
+      startVerificationListener(); 
     } 
-  }, 2000);
+  }, 1000);
 </script>
 </body>
 </html>
