@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +17,7 @@
     .header { background: #0D0321; border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(2px); }
     .header-container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; padding: 14px 24px; }
     .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-    .logo-icon { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #FFCE73, #FF9F4A); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .custom-logo { width: 42px; height: 42px; background: linear-gradient(135deg, #FFCE73, #FF9F4A); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: #0A0518; box-shadow: 0 0 10px rgba(255,206,115,0.4); }
     .logo-text { font-size: 26px; font-weight: 800; background: linear-gradient(135deg, #FFE6B0, #FFCE73); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .menu-btn { background: none; border: none; font-size: 28px; cursor: pointer; color: #FFCE73; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
     .search-bar { flex: 1; max-width: 460px; position: relative; }
@@ -27,28 +26,36 @@
     .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #A79ED3; font-size: 18px; }
     .btn-sell { background: #FFCE73; border: none; padding: 8px 24px; border-radius: 40px; font-weight: 700; cursor: pointer; transition: 0.2s; color: #0A0518; }
     .btn-sell:hover { background: #ffbe3c; transform: scale(0.97); }
-    .avatar { width: 38px; height: 38px; background: #2D214D; border-radius: 50%; background-image: url('https://cdn-user-photo.zeusx.com/e7c854b4-fc89-45de-b047-d44be6e21258.jpg'); background-size: cover; border: 1.5px solid #FFCE73; cursor: pointer; }
-    /* Sidebar */
-    .sidebar { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: #0F0826; z-index: 200; backdrop-filter: blur(20px); border-right: 1px solid #2F2350; transition: 0.3s ease; padding: 80px 20px 30px; }
+    .avatar { width: 42px; height: 42px; background: #2D214D; border-radius: 50%; background-size: cover; background-position: center; border: 2px solid #FFCE73; cursor: pointer; background-image: url('https://cdn-user-photo.zeusx.com/e7c854b4-fc89-45de-b047-d44be6e21258.jpg'); }
+    /* Sidebar with account section */
+    .sidebar { position: fixed; top: 0; left: -350px; width: 320px; height: 100%; background: #0F0826; z-index: 200; backdrop-filter: blur(20px); border-right: 1px solid #2F2350; transition: 0.3s ease; padding: 20px 16px 30px; overflow-y: auto; }
     .sidebar.open { left: 0; }
+    .close-sidebar { position: absolute; top: 16px; right: 16px; background: none; border: none; color: #FFCE73; font-size: 24px; cursor: pointer; }
+    .account-section { background: linear-gradient(135deg, #1A1136, #11082A); border-radius: 28px; padding: 20px; margin-bottom: 24px; border: 1px solid #FFCE7340; text-align: center; }
+    .profile-image { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 12px; border: 3px solid #FFCE73; object-fit: cover; background: #2D214D; cursor: pointer; }
+    .profile-name { font-size: 20px; font-weight: 700; color: #FFCE73; margin-bottom: 6px; word-break: break-word; }
+    .profile-email { font-size: 12px; color: #A9A2D6; margin-bottom: 12px; }
+    .edit-profile-btn { background: #2A204A; border: none; padding: 8px 16px; border-radius: 40px; color: #FFCE73; font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 8px; transition: 0.2s; }
+    .edit-profile-btn:hover { background: #FFCE7322; }
+    .balance-display { background: #2A204A; border-radius: 28px; padding: 16px; margin-bottom: 20px; text-align: center; }
     .sidebar-item { padding: 14px 18px; margin: 8px 0; background: #1A1136; border-radius: 20px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 12px; transition: 0.2s; }
     .sidebar-item:hover { background: #FFCE7322; }
-    .close-sidebar { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #FFCE73; font-size: 24px; cursor: pointer; }
-    .balance-display { background: #2A204A; border-radius: 28px; padding: 16px; margin-bottom: 20px; text-align: center; }
-    /* Account Slider */
+    .logout-item { background: #3A1E2E; color: #FF8A8A; margin-top: 20px; border: 1px solid #FF5E7C40; }
+    .logout-item:hover { background: #FF5E7C22; }
+    /* Account Slider (login/register) */
     .account-slider { position: fixed; top: 0; right: -420px; width: 400px; height: 100%; background: #0F0826; z-index: 300; backdrop-filter: blur(20px); border-left: 1px solid #FFCE7340; transition: 0.3s ease; padding: 80px 28px 30px; overflow-y: auto; }
     .account-slider.open { right: 0; }
     .close-account { position: absolute; top: 20px; left: 20px; background: none; border: none; color: #FFCE73; font-size: 24px; cursor: pointer; }
-    .google-btn { background: white; color: #333; display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 12px; border-radius: 40px; font-weight: 600; margin: 15px 0; cursor: pointer; border: none; transition: 0.2s; }
-    .google-btn:hover { background: #f0f0f0; transform: scale(0.98); }
     .input-field { width: 100%; padding: 14px; background: #1E153C; border: 1px solid #3A2D62; border-radius: 30px; color: white; margin: 12px 0; outline: none; }
     .input-field:focus { border-color: #FFCE73; }
     .auth-btn { background: #FFCE73; width: 100%; padding: 14px; border-radius: 40px; font-weight: bold; border: none; margin-top: 12px; cursor: pointer; color: #0A0518; font-size: 16px; }
+    .google-btn { background: white; color: #333; display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 12px; border-radius: 40px; font-weight: 600; margin: 15px 0; cursor: pointer; border: none; transition: 0.2s; }
+    .google-btn:hover { background: #f0f0f0; transform: scale(0.98); }
     .switch-auth { text-align: center; margin-top: 20px; color: #FFCE73; cursor: pointer; }
     /* offers grid */
     .offers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 26px; margin: 40px 0; }
     .offer-card { background: #11072A; border-radius: 24px; overflow: hidden; cursor: pointer; border: 1px solid #272045; transition: 0.2s; }
-    .offer-card:hover { transform: translateY(-5px); border-color: #FFCE7340; box-shadow: 0 20px 30px -12px rgba(0,0,0,0.5); }
+    .offer-card:hover { transform: translateY(-5px); border-color: #FFCE7340; }
     .card-img { width: 100%; aspect-ratio: 1 / 0.9; object-fit: cover; }
     .card-content { padding: 16px; }
     .price { font-size: 22px; font-weight: 800; color: #FFD966; }
@@ -57,27 +64,23 @@
     .fullpage-detail, .fullpage-cart, .fullpage-withdraw, .payment-modal, .sell-form-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0A0518F2; backdrop-filter: blur(12px); z-index: 1000; overflow-y: auto; visibility: hidden; opacity: 0; transition: 0.2s; }
     .fullpage-detail.active, .fullpage-cart.active, .fullpage-withdraw.active, .payment-modal.active, .sell-form-overlay.active { visibility: visible; opacity: 1; }
     .detail-header { position: sticky; top: 0; background: #0D0321CC; backdrop-filter: blur(16px); padding: 16px 24px; display: flex; align-items: center; gap: 20px; z-index: 10; }
-    .back-btn { background: rgba(255,255,255,0.1); border: none; color: #FFCE73; font-size: 28px; cursor: pointer; width: 44px; height: 44px; border-radius: 40px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-    .back-btn:hover { background: rgba(255,255,255,0.2); }
+    .back-btn { background: rgba(255,255,255,0.1); border: none; color: #FFCE73; font-size: 28px; cursor: pointer; width: 44px; height: 44px; border-radius: 40px; display: flex; align-items: center; justify-content: center; }
     .cart-container, .withdraw-container, .payment-container, .sell-form-container { max-width: 900px; margin: 40px auto; background: #11082A; border-radius: 48px; padding: 32px; border: 1px solid #3A2D62; }
     .qr-img { width: 180px; height: 180px; background: white; margin: 15px auto; border-radius: 24px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .qr-img img { width: 100%; height: 100%; object-fit: contain; }
     .screenshot-preview { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
     .screenshot-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 12px; border: 1px solid #FFCE73; }
     .gallery-upload-area { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
-    .gallery-preview-img { width: 80px; height: 80px; object-fit: cover; border-radius: 16px; border: 1px solid #FFCE73; cursor: pointer; }
+    .gallery-preview-img { width: 80px; height: 80px; object-fit: cover; border-radius: 16px; border: 1px solid #FFCE73; }
     .submit-btn { background: #FFCE73; width: 100%; padding: 14px; border-radius: 40px; font-weight: bold; margin-top: 12px; cursor: pointer; border: none; color: #0A0518; font-size: 16px; transition: 0.2s; }
     .submit-btn:hover { transform: scale(0.98); opacity: 0.9; }
     .close-sell { background: #3A2D62; color: white; }
     .footer { background: #08031A; border-top: 1px solid #1A1236; padding: 32px 0; text-align: center; margin-top: 40px; color: #7E74AA; font-size: 14px; }
-    .toast-notify { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1E153C; color: #FFCE73; padding: 12px 24px; border-radius: 60px; font-size: 14px; z-index: 2000; border-left: 4px solid #FFCE73; animation: fadeInUp 0.3s ease; pointer-events: none; font-weight: 500; }
+    .toast-notify { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1E153C; color: #FFCE73; padding: 12px 24px; border-radius: 60px; font-size: 14px; z-index: 2000; border-left: 4px solid #FFCE73; animation: fadeInUp 0.3s ease; pointer-events: none; }
     @keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-    .remove-cart-btn { background: #FF5E7C; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; color: white; transition: 0.2s; }
-    .remove-cart-btn:hover { background: #ff3a5e; }
+    .remove-cart-btn { background: #FF5E7C; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; color: white; }
     .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid #2A204A; flex-wrap: wrap; gap: 10px; }
-    .main-image { width: 100%; border-radius: 28px; overflow: hidden; background: #150E32; }
-    .main-image img { width: 100%; height: auto; display: block; }
-    @media (max-width: 700px) { .account-slider { width: 100%; right: -100%; } .container { padding: 0 16px; } }
+    .main-image img { width: 100%; border-radius: 28px; }
+    @media (max-width: 700px) { .account-slider { width: 100%; right: -100%; } .sidebar { width: 280px; } }
   </style>
 </head>
 <body>
@@ -87,7 +90,7 @@
     <div style="display: flex; align-items: center; gap: 12px;">
       <button class="menu-btn" id="menuToggleBtn">☰</button>
       <div class="logo-area" id="homeLogoBtn">
-        <span class="logo-icon">🎮</span>
+        <div class="custom-logo">AK</div>
         <span class="logo-text">BUY & SELL</span>
       </div>
     </div>
@@ -102,9 +105,15 @@
   </div>
 </div>
 
-<!-- Sidebar -->
+<!-- Sidebar with Account Section & Logout -->
 <div id="sidebar" class="sidebar">
   <button class="close-sidebar" id="closeSidebarBtn">✕</button>
+  <div class="account-section" id="accountSectionSidebar">
+    <img id="sidebarProfileImg" class="profile-image" src="https://cdn-user-photo.zeusx.com/e7c854b4-fc89-45de-b047-d44be6e21258.jpg" alt="profile">
+    <div class="profile-name" id="sidebarProfileName">Guest User</div>
+    <div class="profile-email" id="sidebarProfileEmail">Not logged in</div>
+    <button class="edit-profile-btn" id="editProfileBtn">✏️ Edit Profile</button>
+  </div>
   <div class="balance-display">
     <div>💰 Wallet Balance</div>
     <div style="font-size:32px; font-weight:800;" id="walletBalance">$0.00</div>
@@ -112,9 +121,10 @@
   </div>
   <div class="sidebar-item" id="checkoutSectionBtn">🛒 View Cart & Checkout</div>
   <div class="sidebar-item" id="withdrawSectionBtn">💸 Withdraw Funds</div>
+  <div class="sidebar-item logout-item" id="logoutBtn">🚪 Logout</div>
 </div>
 
-<!-- Account Slider -->
+<!-- Account Slider (Login/Register) -->
 <div id="accountSlider" class="account-slider">
   <button class="close-account" id="closeAccountBtn">✕</button>
   <h2 style="margin-bottom: 20px;" id="authTitle">Login Required</h2>
@@ -128,329 +138,138 @@
   </div>
 </div>
 
+<!-- Edit Profile Modal (inline) -->
+<div id="editProfileModal" class="payment-modal" style="z-index: 1100;">
+  <div class="payment-container" style="max-width: 450px;">
+    <h3>Edit Profile</h3>
+    <img id="editProfilePreview" class="profile-image" style="width:100px; height:100px; margin:10px auto;" src="">
+    <input type="file" id="profileImageUpload" accept="image/*" class="input-field">
+    <input type="text" id="editDisplayName" class="input-field" placeholder="Display Name">
+    <button class="submit-btn" id="saveProfileBtn">Save Changes</button>
+    <button class="submit-btn close-sell" id="closeEditModalBtn">Cancel</button>
+  </div>
+</div>
+
 <!-- Products Grid -->
 <div class="container"><div class="offers-grid" id="offersGrid"></div></div>
 
-<!-- Full Detail Page -->
-<div id="fullDetailPage" class="fullpage-detail">
-  <div class="detail-header"><button class="back-btn" id="closeDetailFull">←</button><div style="font-weight:600;">Account Details</div><div style="width:44px;"></div></div>
-  <div id="fullDetailContent"></div>
-</div>
+<!-- Full Detail, Cart, Withdraw, Payment, Sell Modals (same as before but compact) -->
+<div id="fullDetailPage" class="fullpage-detail"><div class="detail-header"><button class="back-btn" id="closeDetailFull">←</button><div>Details</div><div style="width:44px;"></div></div><div id="fullDetailContent"></div></div>
+<div id="fullpageCart" class="fullpage-cart"><div class="detail-header"><button class="back-btn" id="closeCartFull">←</button><div>Cart</div><div style="width:44px;"></div></div><div class="cart-container"><div id="cartItemsListPage"></div><div id="cartTotalAmount"></div><button class="submit-btn" id="checkoutCartBtn">Checkout</button></div></div>
+<div id="withdrawFullPage" class="fullpage-withdraw"><div class="detail-header"><button class="back-btn" id="closeWithdrawFull">←</button><div>Withdraw</div><div style="width:44px;"></div></div><div class="withdraw-container"><h2>Balance</h2><div style="font-size:56px; font-weight:800; text-align:center;" id="withdrawBalanceAmount">$0.00</div><button class="submit-btn" id="openCashoutModalBtn">Cash Out</button></div></div>
+<div id="paymentModal" class="payment-modal"><div class="payment-container"><h3>Payment</h3><div class="qr-img"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ADMIN_QR" width="150"></div><input type="text" id="paymentEmail" placeholder="Email" class="input-field"><input type="text" id="paymentWhatsapp" placeholder="WhatsApp" class="input-field"><input type="file" id="screenshotInput" accept="image/*"><div id="screenshotPreview"></div><button class="submit-btn" id="confirmPaymentBtn">Confirm</button><button class="submit-btn close-sell" id="closePaymentBtn">Cancel</button></div></div>
+<div id="cashoutModal" class="payment-modal"><div class="payment-container"><h3>Cashout</h3><select id="cashoutMethod" class="input-field"><option>Esewa</option><option>Bank</option><option>PhonePe</option></select><input type="text" id="cashoutAccountId" placeholder="Account ID" class="input-field"><input type="number" id="cashoutAmount" placeholder="Amount (USD)" class="input-field"><button class="submit-btn" id="requestCashoutBtn">Request</button><button class="submit-btn close-sell" id="closeCashoutBtn">Cancel</button></div></div>
+<div id="sellModal" class="sell-form-overlay"><div class="sell-form-container"><h3>Sell Account</h3><input type="text" id="productTitle" placeholder="Title" class="input-field"><input type="number" id="productPrice" placeholder="Price USD" class="input-field"><input type="file" id="galleryImageInput" accept="image/*" multiple><div id="galleryPreviewArea" class="gallery-upload-area"></div><textarea id="productDesc" rows="3" placeholder="Description" class="input-field"></textarea><input type="text" id="contactInfo" placeholder="Contact" class="input-field"><input type="password" id="accountPassword" placeholder="Password" class="input-field"><button class="submit-btn" id="submitListingBtn">Publish</button><button class="submit-btn close-sell" id="closeSellBtn">Cancel</button></div></div>
 
-<!-- Full Page Cart -->
-<div id="fullpageCart" class="fullpage-cart">
-  <div class="detail-header"><button class="back-btn" id="closeCartFull">←</button><div style="font-weight:600;">Your Cart</div><div style="width:44px;"></div></div>
-  <div class="cart-container"><div id="cartItemsListPage"></div><div id="cartTotalAmount" style="font-size:24px; font-weight:800; margin-top:20px;"></div><button class="submit-btn" id="checkoutCartBtn">Proceed to Checkout</button></div>
-</div>
-
-<!-- Withdrawal Full Page -->
-<div id="withdrawFullPage" class="fullpage-withdraw">
-  <div class="detail-header"><button class="back-btn" id="closeWithdrawFull">←</button><div style="font-weight:600;">Withdrawal Center</div><div style="width:44px;"></div></div>
-  <div class="withdraw-container"><h2>💰 Your Balance</h2><div style="font-size:56px; font-weight:800; color:#FFD966; text-align:center; margin:20px 0;" id="withdrawBalanceAmount">$0.00</div><button class="submit-btn" id="openCashoutModalBtn">Cash Out Now</button></div>
-</div>
-
-<!-- Payment Modal -->
-<div id="paymentModal" class="payment-modal">
-  <div class="payment-container"><h3>💳 Complete Payment</h3><div class="qr-img"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ADMIN_QR_FOR_PAYMENT" width="150" alt="QR Code"></div><p style="text-align:center; margin:10px 0;">Scan QR with Esewa / Bank / PhonePe</p><input type="text" id="paymentEmail" class="input-field" placeholder="Email for delivery"><input type="text" id="paymentWhatsapp" class="input-field" placeholder="WhatsApp Number"><input type="file" id="screenshotInput" accept="image/*"><div id="screenshotPreview" class="screenshot-preview"></div><button class="submit-btn" id="confirmPaymentBtn">Confirm Payment</button><button class="submit-btn close-sell" id="closePaymentBtn">Cancel</button></div>
-</div>
-
-<!-- Cashout Modal -->
-<div id="cashoutModal" class="payment-modal" style="z-index:1100;">
-  <div class="payment-container"><h3>Request Cashout</h3><select id="cashoutMethod" class="input-field"><option>Esewa</option><option>Bank Transfer</option><option>PhonePe</option></select><input type="text" id="cashoutAccountId" placeholder="Account ID / UPI / Esewa ID" class="input-field"><input type="number" id="cashoutAmount" placeholder="Amount (USD)" class="input-field"><button class="submit-btn" id="requestCashoutBtn">Request Withdrawal</button><button class="submit-btn close-sell" id="closeCashoutBtn">Cancel</button></div>
-</div>
-
-<!-- Sell Modal -->
-<div id="sellModal" class="sell-form-overlay">
-  <div class="sell-form-container"><h3>🎮 Sell Your Account</h3><input type="text" id="productTitle" placeholder="Account Title *" class="input-field"><input type="number" id="productPrice" placeholder="Price (USD) *" class="input-field"><label style="color:#FFCE73; font-size:14px;">📷 Upload Images from Gallery</label><input type="file" id="galleryImageInput" accept="image/*" multiple><div id="galleryPreviewArea" class="gallery-upload-area"></div><textarea id="productDesc" rows="3" placeholder="Description (rank, skins, characters...)" class="input-field"></textarea><input type="text" id="contactInfo" placeholder="Contact (Email/WhatsApp) *" class="input-field"><input type="password" id="accountPassword" placeholder="Account Password (handover)" class="input-field"><button class="submit-btn" id="submitListingBtn">Publish Listing</button><button class="submit-btn close-sell" id="closeSellBtn">Cancel</button></div>
-</div>
-
-<footer class="footer"><div class="container"><div>© 2026 Buy and Sell — Secure Gaming Marketplace | USD / NPR</div></div></footer>
+<footer class="footer"><div class="container">© 2026 AK Buy & Sell — Secure Marketplace | USD / NPR</div></footer>
 
 <script>
-  // ---------- FIREBASE CONFIG ----------
-  const firebaseConfig = {
-    apiKey: "AIzaSyAipk6iSzjkQoQOVEVFUydxPAqXjOaRfhY",
-    authDomain: "everest-public-school.firebaseapp.com",
-    databaseURL: "https://everest-public-school-default-rtdb.firebaseio.com",
-    projectId: "everest-public-school",
-    storageBucket: "everest-public-school.firebasestorage.app",
-    messagingSenderId: "598969496568",
-    appId: "1:598969496568:web:940519ed8eb94e6c7e9c0d"
-  };
+  const firebaseConfig = { apiKey: "AIzaSyAipk6iSzjkQoQOVEVFUydxPAqXjOaRfhY", authDomain: "everest-public-school.firebaseapp.com", databaseURL: "https://everest-public-school-default-rtdb.firebaseio.com", projectId: "everest-public-school", storageBucket: "everest-public-school.firebasestorage.app", messagingSenderId: "598969496568", appId: "1:598969496568:web:940519ed8eb94e6c7e9c0d" };
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
-
   const USD_TO_NPR = 135;
   function formatNPR(usd) { return `रू${(usd * USD_TO_NPR).toFixed(2)}`; }
   function showToast(msg) { let t=document.createElement('div'); t.className='toast-notify'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
 
-  // User state
-  let isLoggedIn = false;
-  let currentUser = null;
-  let pendingAction = null;
-  let pendingOfferForAction = null;
-  let cart = [];
-  let selectedGalleryImages = [];
-  let screenshotFile = null;
-  let pendingPurchaseOffer = null;
+  let isLoggedIn = false, currentUser = null, pendingAction = null, pendingOfferForAction = null, cart = [], selectedGalleryImages = [], screenshotFile = null, pendingPurchaseOffer = null, marketplaceOffers = [];
 
-  // Marketplace products (sync from Firebase)
-  let marketplaceOffers = [];
-
-  // Helper: load products from Firebase
-  function loadProductsFromFirebase() {
-    db.ref('products').on('value', (snapshot) => {
-      const products = [];
-      snapshot.forEach(child => {
-        let p = child.val();
-        p.id = child.key;
-        products.push(p);
-      });
-      marketplaceOffers = products;
-      renderCards();
-    });
-  }
-
-  // Helper: load user balance and persist
-  function loadUserData(uid) {
-    db.ref(`users/${uid}`).once('value').then(snap => {
-      let userData = snap.val();
-      if(userData) {
-        currentUser.balance = userData.balance || 0;
-        updateWalletUI();
-      } else {
-        db.ref(`users/${uid}`).set({ email: currentUser.email, name: currentUser.name, balance: 0, createdAt: Date.now() });
-        currentUser.balance = 0;
-        updateWalletUI();
-      }
-    });
-  }
-
-  function updateWalletUI() { 
-    let bal = currentUser?.balance || 0;
-    document.getElementById('walletBalance').innerText = `$${bal.toFixed(2)}`;
-    document.getElementById('walletBalanceNPR').innerHTML = formatNPR(bal);
-    let wd = document.getElementById('withdrawBalanceAmount');
-    if(wd) wd.innerText = `$${bal.toFixed(2)}`;
-  }
-
+  function loadProducts() { db.ref('products').on('value', (snap) => { let products = []; snap.forEach(c => { let p=c.val(); p.id=c.key; products.push(p); }); marketplaceOffers = products; renderCards(); }); }
   function renderCards() {
-    const grid = document.getElementById('offersGrid');
-    if(!grid) return;
-    const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
-    let filtered = marketplaceOffers.filter(offer => offer.title?.toLowerCase().includes(searchTerm) || offer.seller?.toLowerCase().includes(searchTerm));
-    grid.innerHTML = '';
-    filtered.forEach(offer => {
-      const card = document.createElement('div');
-      card.className = 'offer-card';
-      const imgUrl = (offer.images && offer.images[0]) ? offer.images[0] : 'https://cdn-game-photos.zeusx.com/free-fire.jpg';
-      card.innerHTML = `<img class="card-img" src="${imgUrl}" onerror="this.src='https://cdn-game-photos.zeusx.com/free-fire.jpg'"><div class="card-content"><div class="price">$${offer.price.toFixed(2)}</div><div class="price-npr">${formatNPR(offer.price)}</div><div style="font-weight:600; margin:8px 0;">${offer.title?.substring(0,50)}</div><div style="display:flex; gap:8px; font-size:13px;">⭐${offer.rating || 5.0} | ${offer.seller || 'User'}</div></div>`;
-      card.addEventListener('click', () => openFullDetailPage(offer.id));
-      grid.appendChild(card);
-    });
+    const grid = document.getElementById('offersGrid'); if(!grid) return;
+    const term = document.getElementById('searchInput')?.value.toLowerCase() || '';
+    let filtered = marketplaceOffers.filter(o => o.title?.toLowerCase().includes(term) || o.seller?.toLowerCase().includes(term));
+    grid.innerHTML = filtered.map(offer => `<div class="offer-card" data-id="${offer.id}"><img class="card-img" src="${offer.images?.[0] || 'https://cdn-game-photos.zeusx.com/free-fire.jpg'}" onerror="this.src='https://cdn-game-photos.zeusx.com/free-fire.jpg'"><div class="card-content"><div class="price">$${offer.price.toFixed(2)}</div><div class="price-npr">${formatNPR(offer.price)}</div><div style="font-weight:600;">${offer.title?.substring(0,50)}</div><div>⭐${offer.rating||5} | ${offer.seller}</div></div></div>`).join('');
+    document.querySelectorAll('.offer-card').forEach(card => { const id = card.dataset.id; card.addEventListener('click', () => openDetail(id)); });
   }
+  function openDetail(id) { const offer = marketplaceOffers.find(o=>o.id==id); if(!offer) return; document.getElementById('fullDetailContent').innerHTML = `<div style="padding:20px;"><div class="main-image"><img src="${offer.images?.[0] || ''}"></div><div style="font-size:28px;font-weight:800;">${offer.title}</div><div style="font-size:36px;color:#FFD966;">$${offer.price} (${formatNPR(offer.price)})</div><div>${offer.description||''}</div><button class="submit-btn" id="detailAddCart">Add to Cart</button><button class="submit-btn" id="detailBuyNow">Buy Now</button></div>`; document.getElementById('detailAddCart')?.addEventListener('click',()=>handleCart(offer)); document.getElementById('detailBuyNow')?.addEventListener('click',()=>handleBuy(offer)); document.getElementById('fullDetailPage').classList.add('active'); }
+  function handleCart(o){ if(!isLoggedIn){ pendingOfferForAction=o; pendingAction='addToCart'; openAccountSlider(); showToast('Login to add'); } else addToCart(o); }
+  function handleBuy(o){ if(!isLoggedIn){ pendingOfferForAction=o; pendingAction='buyNow'; openAccountSlider(); } else initiatePurchase(o); }
+  function addToCart(o){ if(!cart.find(i=>i.id==o.id)){ cart.push({...o}); renderCartPage(); showToast(`Added ${o.title}`); } else showToast('Already in cart'); }
+  function initiatePurchase(o){ pendingPurchaseOffer=o; document.getElementById('paymentModal').classList.add('active'); screenshotFile=null; document.getElementById('screenshotPreview').innerHTML=''; }
+  function renderCartPage(){ let c=document.getElementById('cartItemsListPage'); if(!c) return; if(cart.length===0){ c.innerHTML='<div style="text-align:center">Cart empty</div>'; document.getElementById('cartTotalAmount').innerHTML='Total: $0.00'; return; } let total=0; c.innerHTML=cart.map(i=>{ total+=i.price; return `<div class="cart-item"><div><strong>${i.title}</strong><br>$${i.price}</div><button class="remove-cart-btn" data-id="${i.id}">Remove</button></div>`; }).join(''); document.getElementById('cartTotalAmount').innerHTML=`Total: $${total.toFixed(2)}`; document.querySelectorAll('.remove-cart-btn').forEach(btn=>btn.addEventListener('click',(e)=>{ cart=cart.filter(c=>c.id!=btn.dataset.id); renderCartPage(); showToast('Removed'); })); }
+  function checkoutCart(){ if(cart.length===0) showToast('Cart empty'); else if(!isLoggedIn){ pendingAction='buyNow'; pendingOfferForAction=cart[0]; openAccountSlider(); } else { pendingPurchaseOffer=cart[0]; initiatePurchase(pendingPurchaseOffer); } }
 
-  function openFullDetailPage(id) {
-    const offer = marketplaceOffers.find(o => o.id == id);
-    if(!offer) return;
-    document.getElementById('fullDetailContent').innerHTML = `
-      <div style="padding:20px;"><div class="main-image"><img src="${offer.images?.[0] || 'https://cdn-game-photos.zeusx.com/free-fire.jpg'}" alt="${offer.title}"></div>
-      <div style="margin-top:20px;"><div style="font-size:28px; font-weight:800;">${offer.title}</div>
-      <div style="font-size:36px;color:#FFD966; margin:16px 0;">$${offer.price.toFixed(2)} <span style="font-size:20px;">(${formatNPR(offer.price)})</span></div>
-      <div style="background:#171139; padding:16px; border-radius:24px;">⭐ ${offer.seller} · ${offer.rating || 5.0}</div>
-      <div style="margin:16px 0; line-height:1.6;">${offer.description || 'Amazing gaming account'}</div>
-      <button class="submit-btn" id="detailAddCart" style="background:#3A2D62; color:#FFCE73;">🛒 Add to Cart</button>
-      <button class="submit-btn" id="detailBuyNow" style="background:#FFCE73; margin-top:12px;">💎 Buy Now</button></div></div>
-    `;
-    document.getElementById('detailAddCart')?.addEventListener('click', () => handleAddToCart(offer));
-    document.getElementById('detailBuyNow')?.addEventListener('click', () => handleBuyNow(offer));
-    document.getElementById('fullDetailPage').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function handleAddToCart(offer) {
-    if(!isLoggedIn) { pendingOfferForAction = offer; pendingAction = 'addToCart'; openAccountSlider(); showToast('Please login to add items'); }
-    else { addToCart(offer); }
-  }
-  function handleBuyNow(offer) {
-    if(!isLoggedIn) { pendingOfferForAction = offer; pendingAction = 'buyNow'; openAccountSlider(); showToast('Please login to purchase'); }
-    else { initiatePurchase(offer); }
-  }
-  function addToCart(offer) { 
-    if(!cart.find(i=>i.id == offer.id)) { cart.push({...offer}); renderCartPage(); showToast(`"${offer.title.substring(0,30)}" added to cart`); }
-    else showToast('Already in cart');
-  }
-  function initiatePurchase(offer) { pendingPurchaseOffer = offer; document.getElementById('paymentModal').classList.add('active'); document.getElementById('screenshotInput').value = ''; screenshotFile = null; document.getElementById('screenshotPreview').innerHTML = ''; }
-
-  // login / register with firebase sync
-  function handleLogin() {
-    let email = document.getElementById('loginEmail').value.trim();
-    let pwd = document.getElementById('loginPassword').value.trim();
-    if(!email || !pwd) { showToast('Enter credentials'); return; }
-    const userId = btoa(email).replace(/[^a-zA-Z0-9]/g, '');
-    db.ref(`users/${userId}`).once('value').then(snap => {
-      let user = snap.val();
-      if(user && user.password === pwd) {
-        isLoggedIn = true;
-        currentUser = { uid: userId, email: user.email, name: user.name || email.split('@')[0], balance: user.balance || 0 };
-        showToast(`Welcome ${currentUser.name}!`);
-        closeAccountSlider();
-        document.getElementById('avatarBtn').style.borderColor = '#2DCC7A';
-        updateWalletUI();
-        if(pendingAction && pendingOfferForAction) { if(pendingAction === 'addToCart') addToCart(pendingOfferForAction); else if(pendingAction === 'buyNow') initiatePurchase(pendingOfferForAction); pendingAction=null; pendingOfferForAction=null; }
-      } else {
-        db.ref(`users/${userId}`).set({ email, password: pwd, name: email.split('@')[0], balance: 0, createdAt: Date.now() });
-        isLoggedIn = true;
-        currentUser = { uid: userId, email, name: email.split('@')[0], balance: 0 };
-        showToast(`Registered & logged in!`);
-        closeAccountSlider();
-        document.getElementById('avatarBtn').style.borderColor = '#2DCC7A';
-        updateWalletUI();
-        if(pendingAction && pendingOfferForAction) { if(pendingAction === 'addToCart') addToCart(pendingOfferForAction); else if(pendingAction === 'buyNow') initiatePurchase(pendingOfferForAction); pendingAction=null; pendingOfferForAction=null; }
-      }
-      document.getElementById('loginEmail').value = ''; document.getElementById('loginPassword').value = '';
-    });
-  }
-  function handleGoogleLogin() {
-    const fakeId = 'google_' + Date.now();
-    isLoggedIn = true;
-    currentUser = { uid: fakeId, email: 'google_user@gmail.com', name: 'Google User', balance: 0 };
-    db.ref(`users/${fakeId}`).set({ email: 'google_user@gmail.com', name: 'Google User', balance: 0 });
-    showToast('Signed in with Google!');
-    closeAccountSlider();
-    document.getElementById('avatarBtn').style.borderColor = '#2DCC7A';
-    updateWalletUI();
-    if(pendingAction && pendingOfferForAction) { if(pendingAction === 'addToCart') addToCart(pendingOfferForAction); else if(pendingAction === 'buyNow') initiatePurchase(pendingOfferForAction); pendingAction=null; pendingOfferForAction=null; }
-  }
-
-  // Cart render
-  function renderCartPage() {
-    let container = document.getElementById('cartItemsListPage');
-    if(!container) return;
-    if(cart.length === 0) { container.innerHTML = '<div style="text-align:center; padding:40px;">Cart empty</div>'; document.getElementById('cartTotalAmount').innerHTML = 'Total: $0.00'; return; }
-    let total = 0;
-    container.innerHTML = cart.map(item => { total += item.price; return `<div class="cart-item"><div><strong>${item.title.substring(0,40)}</strong><br>$${item.price.toFixed(2)} (${formatNPR(item.price)})</div><button class="remove-cart-btn" data-id="${item.id}">Remove</button></div>`; }).join('');
-    document.getElementById('cartTotalAmount').innerHTML = `Total: $${total.toFixed(2)} (${formatNPR(total)})`;
-    document.querySelectorAll('.remove-cart-btn').forEach(btn => btn.addEventListener('click', (e) => { const id = btn.dataset.id; cart = cart.filter(c => c.id != id); renderCartPage(); showToast('Removed'); }));
-  }
-  function checkoutCartItems() { if(cart.length===0) showToast('Cart empty'); else if(!isLoggedIn) { pendingAction='buyNow'; pendingOfferForAction=cart[0]; openAccountSlider(); } else { pendingPurchaseOffer = cart[0]; initiatePurchase(pendingPurchaseOffer); } }
-
-  // Withdrawal request
-  function requestCashout() {
-    if(!isLoggedIn) { openAccountSlider(); showToast('Login to withdraw'); return; }
-    const method = document.getElementById('cashoutMethod').value;
-    const accountId = document.getElementById('cashoutAccountId').value.trim();
-    const amount = parseFloat(document.getElementById('cashoutAmount').value);
-    if(!accountId || isNaN(amount) || amount <= 0) { showToast('Valid amount and account ID'); return; }
-    if(amount < 5) { showToast('Min $5'); return; }
-    if(amount > (currentUser.balance||0)) { showToast('Insufficient balance'); return; }
-    db.ref('withdrawRequests').push({ uid: currentUser.uid, name: currentUser.name, amount, esewa: accountId, method, status: 'pending', timestamp: Date.now() });
-    showToast(`Withdrawal request $${amount} submitted!`);
-    closeCashoutModal();
-    document.getElementById('cashoutAccountId').value = '';
-    document.getElementById('cashoutAmount').value = '';
-  }
-
-  // Add product to firebase
-  function addNewListing() {
-    if(!isLoggedIn) { openAccountSlider(); showToast('Login to sell'); return; }
-    const title = document.getElementById('productTitle').value.trim();
-    const price = parseFloat(document.getElementById('productPrice').value);
-    const desc = document.getElementById('productDesc').value.trim();
-    const contact = document.getElementById('contactInfo').value.trim();
-    const password = document.getElementById('accountPassword').value;
-    const images = selectedGalleryImages.length ? selectedGalleryImages : ['https://cdn-game-photos.zeusx.com/free-fire.jpg'];
-    if(!title || isNaN(price) || price<=0 || !contact) { showToast('Title, price, contact required'); return; }
-    const newProduct = {
-      title, price, description: desc || 'Account for sale', seller: currentUser.name, sellerId: currentUser.uid,
-      contact, password, images, rating: 5.0, createdAt: Date.now(), status: 'active'
-    };
-    db.ref('products').push(newProduct).then(() => { showToast('Listing published!'); closeSellModal(); clearSellForm(); });
-  }
-  function clearSellForm() { document.getElementById('productTitle').value=''; document.getElementById('productPrice').value=''; document.getElementById('productDesc').value=''; document.getElementById('contactInfo').value=''; document.getElementById('accountPassword').value=''; selectedGalleryImages=[]; document.getElementById('galleryPreviewArea').innerHTML=''; document.getElementById('galleryImageInput').value=''; }
-
-  // Confirm payment and deliver (update seller balance)
-  function confirmPaymentAndDeliver() {
-    if(!pendingPurchaseOffer) return;
-    const email = document.getElementById('paymentEmail').value.trim();
-    const whatsapp = document.getElementById('paymentWhatsapp').value.trim();
-    if((!email && !whatsapp) || !screenshotFile) { showToast("Email/WhatsApp and screenshot required"); return; }
-    const earning = pendingPurchaseOffer.price * 0.85;
-    if(currentUser) {
-      let newBalance = (currentUser.balance || 0) + earning;
-      db.ref(`users/${currentUser.uid}`).update({ balance: newBalance }).then(() => { currentUser.balance = newBalance; updateWalletUI(); });
+  // Account & Profile with Google fix and Logout
+  function updateSidebarProfile() {
+    if(isLoggedIn && currentUser){
+      document.getElementById('sidebarProfileName').innerText = currentUser.displayName || currentUser.name || 'User';
+      document.getElementById('sidebarProfileEmail').innerText = currentUser.email;
+      const imgUrl = currentUser.photoURL || 'https://cdn-user-photo.zeusx.com/e7c854b4-fc89-45de-b047-d44be6e21258.jpg';
+      document.getElementById('sidebarProfileImg').src = imgUrl;
+      document.getElementById('avatarBtn').style.backgroundImage = `url('${imgUrl}')`;
+      document.getElementById('avatarBtn').style.backgroundSize = 'cover';
+    } else {
+      document.getElementById('sidebarProfileName').innerText = 'Guest User';
+      document.getElementById('sidebarProfileEmail').innerText = 'Not logged in';
+      document.getElementById('sidebarProfileImg').src = 'https://cdn-user-photo.zeusx.com/e7c854b4-fc89-45de-b047-d44be6e21258.jpg';
+      document.getElementById('avatarBtn').style.backgroundImage = `url('https://cdn-user-photo.zeusx.com/e7c854b4-fc89-45de-b047-d44be6e21258.jpg')`;
     }
-    showToast(`✅ Payment verified! Credentials sent to ${email || whatsapp}`);
-    cart = cart.filter(c => c.id !== pendingPurchaseOffer.id);
-    renderCartPage();
-    closePaymentModal();
-    document.getElementById('fullDetailPage').classList.remove('active');
-    pendingPurchaseOffer = null;
-    document.getElementById('paymentEmail').value = '';
-    document.getElementById('paymentWhatsapp').value = '';
-    document.getElementById('screenshotPreview').innerHTML = '';
   }
-
-  // UI event bindings
-  function openAccountSlider() { document.getElementById('accountSlider').classList.add('open'); }
-  function closeAccountSlider() { document.getElementById('accountSlider').classList.remove('open'); }
-  function closePaymentModal() { document.getElementById('paymentModal').classList.remove('active'); }
-  function closeCashoutModal() { document.getElementById('cashoutModal').classList.remove('active'); }
-  function openCartFullPage() { renderCartPage(); document.getElementById('fullpageCart').classList.add('active'); document.body.style.overflow = 'hidden'; }
-  function closeCartFullPage() { document.getElementById('fullpageCart').classList.remove('active'); document.body.style.overflow = ''; }
-  function openWithdrawFullPage() { updateWalletUI(); document.getElementById('withdrawFullPage').classList.add('active'); document.body.style.overflow = 'hidden'; }
-  function closeWithdrawFullPage() { document.getElementById('withdrawFullPage').classList.remove('active'); document.body.style.overflow = ''; }
-  function openCashoutModal() { document.getElementById('cashoutModal').classList.add('active'); }
-  function openSellModal() { if(!isLoggedIn) { openAccountSlider(); showToast('Please login to sell'); return; } document.getElementById('sellModal').classList.add('active'); }
-  function closeSellModal() { document.getElementById('sellModal').classList.remove('active'); clearSellForm(); }
-
-  // Gallery preview
-  document.getElementById('galleryImageInput')?.addEventListener('change', (e) => {
-    const files = Array.from(e.target.files);
-    selectedGalleryImages = [];
-    const preview = document.getElementById('galleryPreviewArea');
-    preview.innerHTML = '';
-    files.slice(0,5).forEach(file => { const reader = new FileReader(); reader.onload = (ev) => { selectedGalleryImages.push(ev.target.result); const img = document.createElement('img'); img.src = ev.target.result; img.className = 'gallery-preview-img'; preview.appendChild(img); }; reader.readAsDataURL(file); });
-  });
-  document.getElementById('screenshotInput')?.addEventListener('change', (e) => { if(e.target.files[0]) { screenshotFile = e.target.files[0]; const reader = new FileReader(); reader.onload = (ev) => { document.getElementById('screenshotPreview').innerHTML = `<img src="${ev.target.result}" class="screenshot-thumb"><span>✅ Screenshot ready</span>`; }; reader.readAsDataURL(screenshotFile); } });
-
-  // Event listeners
-  document.getElementById('menuToggleBtn')?.addEventListener('click', () => document.getElementById('sidebar').classList.add('open'));
-  document.getElementById('closeSidebarBtn')?.addEventListener('click', () => document.getElementById('sidebar').classList.remove('open'));
-  document.getElementById('checkoutSectionBtn')?.addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); openCartFullPage(); });
-  document.getElementById('withdrawSectionBtn')?.addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); openWithdrawFullPage(); });
-  document.getElementById('closeCartFull')?.addEventListener('click', closeCartFullPage);
-  document.getElementById('checkoutCartBtn')?.addEventListener('click', checkoutCartItems);
-  document.getElementById('closeDetailFull')?.addEventListener('click', () => { document.getElementById('fullDetailPage').classList.remove('active'); document.body.style.overflow = ''; });
-  document.getElementById('closeWithdrawFull')?.addEventListener('click', closeWithdrawFullPage);
-  document.getElementById('openCashoutModalBtn')?.addEventListener('click', openCashoutModal);
-  document.getElementById('requestCashoutBtn')?.addEventListener('click', requestCashout);
-  document.getElementById('closeCashoutBtn')?.addEventListener('click', closeCashoutModal);
-  document.getElementById('confirmPaymentBtn')?.addEventListener('click', confirmPaymentAndDeliver);
-  document.getElementById('closePaymentBtn')?.addEventListener('click', closePaymentModal);
-  document.getElementById('openSellBtn')?.addEventListener('click', openSellModal);
-  document.getElementById('closeSellBtn')?.addEventListener('click', closeSellModal);
-  document.getElementById('submitListingBtn')?.addEventListener('click', addNewListing);
-  document.getElementById('closeAccountBtn')?.addEventListener('click', closeAccountSlider);
-  document.getElementById('loginBtn')?.addEventListener('click', handleLogin);
-  document.getElementById('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);
-  document.getElementById('avatarBtn')?.addEventListener('click', () => { if(!isLoggedIn) openAccountSlider(); else showToast(`Logged as ${currentUser?.name}`); });
-  document.getElementById('homeLogoBtn')?.addEventListener('click', () => { window.scrollTo({top:0}); document.getElementById('fullDetailPage')?.classList.remove('active'); closeCartFullPage(); closeWithdrawFullPage(); closePaymentModal(); });
-  document.getElementById('searchInput')?.addEventListener('input', () => renderCards());
-  let isLoginMode = true;
-  document.getElementById('switchToRegister')?.addEventListener('click', () => {
-    let btn = document.getElementById('loginBtn');
-    let title = document.getElementById('authTitle');
-    if(isLoginMode) { btn.innerText = 'Register'; title.innerText = 'Create Account'; document.getElementById('switchToRegister').innerText = 'Already have account? Login'; btn.removeEventListener('click', handleLogin); btn.addEventListener('click', handleRegister); } 
-    else { btn.innerText = 'Login'; title.innerText = 'Login Required'; document.getElementById('switchToRegister').innerText = "Don't have an account? Register"; btn.removeEventListener('click', handleRegister); btn.addEventListener('click', handleLogin); }
-    isLoginMode = !isLoginMode;
-  });
-  function handleRegister() { handleLogin(); }
-
-  // Load products from Firebase
-  loadProductsFromFirebase();
-  renderCartPage();
-  updateWalletUI();
+  function updateWalletUI(){ let bal=currentUser?.balance||0; document.getElementById('walletBalance').innerText=`$${bal.toFixed(2)}`; document.getElementById('walletBalanceNPR').innerHTML=formatNPR(bal); let wd=document.getElementById('withdrawBalanceAmount'); if(wd) wd.innerText=`$${bal.toFixed(2)}`; }
+  function loadUserData(uid){ db.ref(`users/${uid}`).once('value').then(snap=>{ let data=snap.val(); if(data){ currentUser.balance=data.balance||0; currentUser.displayName=data.displayName||currentUser.name; currentUser.photoURL=data.photoURL||currentUser.photoURL; updateSidebarProfile(); updateWalletUI(); } else { db.ref(`users/${uid}`).set({ email:currentUser.email, name:currentUser.name, displayName:currentUser.name, balance:0, photoURL:currentUser.photoURL||'' }); currentUser.balance=0; updateWalletUI(); } }); }
+  
+  function handleLogin() { let email=document.getElementById('loginEmail').value.trim(); let pwd=document.getElementById('loginPassword').value.trim(); if(!email||!pwd){ showToast('Enter credentials'); return; } const userId=btoa(email).replace(/[^a-zA-Z0-9]/g,''); db.ref(`users/${userId}`).once('value').then(snap=>{ let user=snap.val(); if(user && user.password===pwd){ isLoggedIn=true; currentUser={ uid:userId, email:user.email, name:user.name||email.split('@')[0], displayName:user.displayName||user.name, balance:user.balance||0, photoURL:user.photoURL||'https://cdn-user-photo.zeusx.com/e7c854b4-fc89-45de-b047-d44be6e21258.jpg' }; showToast(`Welcome ${currentUser.displayName}`); closeAccountSlider(); updateSidebarProfile(); updateWalletUI(); if(pendingAction && pendingOfferForAction){ if(pendingAction==='addToCart') addToCart(pendingOfferForAction); else if(pendingAction==='buyNow') initiatePurchase(pendingOfferForAction); pendingAction=null; pendingOfferForAction=null; } } else { db.ref(`users/${userId}`).set({ email, password:pwd, name:email.split('@')[0], displayName:email.split('@')[0], balance:0, photoURL:'https://cdn-user-photo.zeusx.com/e7c854b4-fc89-45de-b047-d44be6e21258.jpg' }); isLoggedIn=true; currentUser={ uid:userId, email, name:email.split('@')[0], displayName:email.split('@')[0], balance:0, photoURL:'https://cdn-user-photo.zeusx.com/e7c854b4-fc89-45de-b047-d44be6e21258.jpg' }; showToast('Registered!'); closeAccountSlider(); updateSidebarProfile(); updateWalletUI(); if(pendingAction && pendingOfferForAction){ if(pendingAction==='addToCart') addToCart(pendingOfferForAction); else if(pendingAction==='buyNow') initiatePurchase(pendingOfferForAction); pendingAction=null; pendingOfferForAction=null; } } document.getElementById('loginEmail').value=''; document.getElementById('loginPassword').value=''; }); }
+  
+  function handleGoogleLogin() { const fakeId='google_'+Date.now(); isLoggedIn=true; currentUser={ uid:fakeId, email:'google_user@akmarket.com', name:'GoogleUser', displayName:'Google User', balance:0, photoURL:'https://cdn-user-photo.zeusx.com/e7c854b4-fc89-45de-b047-d44be6e21258.jpg' }; db.ref(`users/${fakeId}`).set({ email:'google_user@akmarket.com', name:'GoogleUser', displayName:'Google User', balance:0, photoURL:currentUser.photoURL, createdAt:Date.now() }); showToast('Signed in with Google!'); closeAccountSlider(); updateSidebarProfile(); updateWalletUI(); if(pendingAction && pendingOfferForAction){ if(pendingAction==='addToCart') addToCart(pendingOfferForAction); else if(pendingAction==='buyNow') initiatePurchase(pendingOfferForAction); pendingAction=null; pendingOfferForAction=null; } }
+  
+  function logout() { isLoggedIn=false; currentUser=null; cart=[]; renderCartPage(); updateSidebarProfile(); updateWalletUI(); showToast('Logged out successfully'); document.getElementById('sidebar').classList.remove('open'); }
+  
+  function saveProfile() { if(!isLoggedIn){ showToast('Login first'); return; } const newName=document.getElementById('editDisplayName').value.trim(); const file=document.getElementById('profileImageUpload').files[0]; if(newName) currentUser.displayName=newName; if(file){ const reader=new FileReader(); reader.onload=(e)=>{ currentUser.photoURL=e.target.result; updateSidebarProfile(); db.ref(`users/${currentUser.uid}`).update({ displayName:currentUser.displayName, photoURL:currentUser.photoURL }); showToast('Profile updated'); }; reader.readAsDataURL(file); } else { db.ref(`users/${currentUser.uid}`).update({ displayName:currentUser.displayName }); showToast('Name updated'); updateSidebarProfile(); } document.getElementById('editProfileModal').classList.remove('active'); }
+  
+  function openEditModal(){ if(!isLoggedIn){ openAccountSlider(); showToast('Login to edit'); return; } document.getElementById('editDisplayName').value=currentUser.displayName||''; document.getElementById('editProfilePreview').src=currentUser.photoURL||''; document.getElementById('editProfileModal').classList.add('active'); }
+  
+  function requestCashout(){ if(!isLoggedIn){ openAccountSlider(); return; } const method=document.getElementById('cashoutMethod').value; const acc=document.getElementById('cashoutAccountId').value.trim(); const amt=parseFloat(document.getElementById('cashoutAmount').value); if(!acc||isNaN(amt)||amt<5||amt>(currentUser.balance||0)){ showToast('Invalid amount or ID'); return; } db.ref('withdrawRequests').push({ uid:currentUser.uid, name:currentUser.displayName, amount:amt, esewa:acc, method, status:'pending', timestamp:Date.now() }); showToast(`$${amt} withdrawal requested`); closeCashoutModal(); document.getElementById('cashoutAccountId').value=''; document.getElementById('cashoutAmount').value=''; }
+  
+  function addNewListing(){ if(!isLoggedIn){ openAccountSlider(); return; } const title=document.getElementById('productTitle').value.trim(); const price=parseFloat(document.getElementById('productPrice').value); const desc=document.getElementById('productDesc').value; const contact=document.getElementById('contactInfo').value.trim(); const pwd=document.getElementById('accountPassword').value; const images=selectedGalleryImages.length?selectedGalleryImages:['https://cdn-game-photos.zeusx.com/free-fire.jpg']; if(!title||isNaN(price)||price<=0||!contact){ showToast('Title, price, contact required'); return; } db.ref('products').push({ title, price, description:desc||'Account sale', seller:currentUser.displayName, sellerId:currentUser.uid, contact, password:pwd, images, rating:5.0, createdAt:Date.now() }).then(()=>{ showToast('Listed!'); closeSellModal(); clearSellForm(); }); }
+  function clearSellForm(){ document.getElementById('productTitle').value=''; document.getElementById('productPrice').value=''; document.getElementById('productDesc').value=''; document.getElementById('contactInfo').value=''; document.getElementById('accountPassword').value=''; selectedGalleryImages=[]; document.getElementById('galleryPreviewArea').innerHTML=''; document.getElementById('galleryImageInput').value=''; }
+  function confirmPaymentAndDeliver(){ if(!pendingPurchaseOffer) return; const email=document.getElementById('paymentEmail').value.trim(); const whatsapp=document.getElementById('paymentWhatsapp').value.trim(); if((!email&&!whatsapp)||!screenshotFile){ showToast('Screenshot & contact required'); return; } const earning=pendingPurchaseOffer.price*0.85; if(currentUser){ let newBal=(currentUser.balance||0)+earning; db.ref(`users/${currentUser.uid}`).update({ balance:newBal }).then(()=>{ currentUser.balance=newBal; updateWalletUI(); }); } showToast(`Payment verified! Credentials sent`); cart=cart.filter(c=>c.id!==pendingPurchaseOffer.id); renderCartPage(); closePaymentModal(); document.getElementById('fullDetailPage').classList.remove('active'); pendingPurchaseOffer=null; document.getElementById('paymentEmail').value=''; document.getElementById('paymentWhatsapp').value=''; document.getElementById('screenshotPreview').innerHTML=''; }
+  
+  // Event listeners & UI helpers
+  function openAccountSlider(){ document.getElementById('accountSlider').classList.add('open'); }
+  function closeAccountSlider(){ document.getElementById('accountSlider').classList.remove('open'); }
+  function closePaymentModal(){ document.getElementById('paymentModal').classList.remove('active'); }
+  function closeCashoutModal(){ document.getElementById('cashoutModal').classList.remove('active'); }
+  function openCartFullPage(){ renderCartPage(); document.getElementById('fullpageCart').classList.add('active'); }
+  function closeCartFullPage(){ document.getElementById('fullpageCart').classList.remove('active'); }
+  function openWithdrawFullPage(){ updateWalletUI(); document.getElementById('withdrawFullPage').classList.add('active'); }
+  function closeWithdrawFullPage(){ document.getElementById('withdrawFullPage').classList.remove('active'); }
+  function openCashoutModal(){ document.getElementById('cashoutModal').classList.add('active'); }
+  function openSellModal(){ if(!isLoggedIn){ openAccountSlider(); showToast('Login to sell'); return; } document.getElementById('sellModal').classList.add('active'); }
+  function closeSellModal(){ document.getElementById('sellModal').classList.remove('active'); clearSellForm(); }
+  
+  document.getElementById('menuToggleBtn')?.addEventListener('click',()=>document.getElementById('sidebar').classList.add('open'));
+  document.getElementById('closeSidebarBtn')?.addEventListener('click',()=>document.getElementById('sidebar').classList.remove('open'));
+  document.getElementById('checkoutSectionBtn')?.addEventListener('click',()=>{ document.getElementById('sidebar').classList.remove('open'); openCartFullPage(); });
+  document.getElementById('withdrawSectionBtn')?.addEventListener('click',()=>{ document.getElementById('sidebar').classList.remove('open'); openWithdrawFullPage(); });
+  document.getElementById('logoutBtn')?.addEventListener('click',logout);
+  document.getElementById('editProfileBtn')?.addEventListener('click',openEditModal);
+  document.getElementById('closeCartFull')?.addEventListener('click',closeCartFullPage);
+  document.getElementById('checkoutCartBtn')?.addEventListener('click',checkoutCart);
+  document.getElementById('closeDetailFull')?.addEventListener('click',()=>{ document.getElementById('fullDetailPage').classList.remove('active'); });
+  document.getElementById('closeWithdrawFull')?.addEventListener('click',closeWithdrawFullPage);
+  document.getElementById('openCashoutModalBtn')?.addEventListener('click',openCashoutModal);
+  document.getElementById('requestCashoutBtn')?.addEventListener('click',requestCashout);
+  document.getElementById('closeCashoutBtn')?.addEventListener('click',closeCashoutModal);
+  document.getElementById('confirmPaymentBtn')?.addEventListener('click',confirmPaymentAndDeliver);
+  document.getElementById('closePaymentBtn')?.addEventListener('click',closePaymentModal);
+  document.getElementById('openSellBtn')?.addEventListener('click',openSellModal);
+  document.getElementById('closeSellBtn')?.addEventListener('click',closeSellModal);
+  document.getElementById('submitListingBtn')?.addEventListener('click',addNewListing);
+  document.getElementById('closeAccountBtn')?.addEventListener('click',closeAccountSlider);
+  document.getElementById('loginBtn')?.addEventListener('click',handleLogin);
+  document.getElementById('googleLoginBtn')?.addEventListener('click',handleGoogleLogin);
+  document.getElementById('avatarBtn')?.addEventListener('click',()=>{ if(!isLoggedIn) openAccountSlider(); else showToast(`Logged as ${currentUser?.displayName}`); });
+  document.getElementById('homeLogoBtn')?.addEventListener('click',()=>{ window.scrollTo({top:0}); document.getElementById('fullDetailPage')?.classList.remove('active'); closeCartFullPage(); closeWithdrawFullPage(); closePaymentModal(); });
+  document.getElementById('searchInput')?.addEventListener('input',()=>renderCards());
+  document.getElementById('saveProfileBtn')?.addEventListener('click',saveProfile);
+  document.getElementById('closeEditModalBtn')?.addEventListener('click',()=>document.getElementById('editProfileModal').classList.remove('active'));
+  document.getElementById('galleryImageInput')?.addEventListener('change',(e)=>{ const files=Array.from(e.target.files); selectedGalleryImages=[]; const preview=document.getElementById('galleryPreviewArea'); preview.innerHTML=''; files.slice(0,5).forEach(f=>{ const r=new FileReader(); r.onload=ev=>{ selectedGalleryImages.push(ev.target.result); const img=document.createElement('img'); img.src=ev.target.result; img.className='gallery-preview-img'; preview.appendChild(img); }; r.readAsDataURL(f); }); });
+  document.getElementById('screenshotInput')?.addEventListener('change',(e)=>{ if(e.target.files[0]){ screenshotFile=e.target.files[0]; const r=new FileReader(); r.onload=ev=>{ document.getElementById('screenshotPreview').innerHTML=`<img src="${ev.target.result}" class="screenshot-thumb">`; }; r.readAsDataURL(screenshotFile); } });
+  let isLoginMode=true;
+  document.getElementById('switchToRegister')?.addEventListener('click',()=>{ let btn=document.getElementById('loginBtn'); let title=document.getElementById('authTitle'); if(isLoginMode){ btn.innerText='Register'; title.innerText='Create Account'; document.getElementById('switchToRegister').innerText='Already have account? Login'; btn.removeEventListener('click',handleLogin); btn.addEventListener('click',handleRegister); } else { btn.innerText='Login'; title.innerText='Login Required'; document.getElementById('switchToRegister').innerText="Don't have an account? Register"; btn.removeEventListener('click',handleRegister); btn.addEventListener('click',handleLogin); } isLoginMode=!isLoginMode; });
+  function handleRegister(){ handleLogin(); }
+  
+  loadProducts(); renderCartPage(); updateWalletUI(); updateSidebarProfile();
 </script>
 </body>
 </html>
